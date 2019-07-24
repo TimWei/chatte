@@ -18,6 +18,21 @@ function FrontRouter() {
   window.addEventListener('hashchange', this.resolve.bind(this), false);
 }
 
+//nav bar
+function NavBar() {
+  this.id = $('#nav_btns');
+  this.buttons = {};
+  this.add_btn = function(text, forward) {
+    var a_item = $('<a href="' + forward + '">').text(text);
+    var li_item = $('<li>');
+    this.id.append(li_item.append(a_item));
+  }
+  this.clean = function() {
+    this.id.empty();
+  }
+}
+// nav bar end
+
 FrontRouter.prototype.route = function (path, callback) {
   this.routes[path] = callback || function () { };
 };
@@ -28,20 +43,20 @@ FrontRouter.prototype.resolve = function () {
   try{
     typeof this.routes[match_key] === 'function' && this.routes[match_key](this.curHash);
   }catch(e){
-    window.location.hash = ''
+    window.location.hash = '';
   }
 };
 
 FrontRouter.prototype.match_reg = function (cur_hash) {
   // if matching nothing goes '/'
-  match_key = '/'
+  match_key = '/';
   for( router_key in this.routes){
-    reg = new RegExp('^' + router_key + '$')
+    reg = new RegExp('^' + router_key + '$');
     if(cur_hash.match(reg)){
-      match_key = router_key
+      match_key = router_key;
     }
   }
-  return match_key
+  return match_key;
 };
 
 var router = new FrontRouter();
@@ -83,7 +98,6 @@ function div_active(element) {
   $('.container > div').hide();
   element.show();
 }
-
 
 function check_server_available() {
   res = $.ajax({
@@ -153,13 +167,13 @@ function new_room_item(room) {
   var rooms = $('#room-list');
   var click_pad = $('<a href="#rooms/' + room.id + '">')
   var li_item = $("<li class='list-group-item'>").text(room.name);
-  var span_item =$("<span class='badge'>").text(room.counter);
+  var span_item = $("<span class='badge'>").text(room.counter);
  
   li_item.append(span_item);
   click_pad.append(li_item);
   rooms.append(click_pad);
 
-  console.log("craeting room elem on room_id:" + room.id);
+  console.log("creating room elem on room_id:" + room.id);
 }
 
 function chat_init(room_id) {
